@@ -76,10 +76,3 @@ The source layout follows the flow of the data:
 | `settings` | Application settings and their configurable |
 
 Everything under `core` is plain Kotlin with no platform dependencies and is covered by unit tests.
-
-## Releasing
-
-`pluginVersion` in `gradle.properties` is the single source of truth. Bump it, commit, and push a
-matching `v<pluginVersion>` tag — the release workflow runs the checks, publishes to the JetBrains
-Marketplace and creates a GitHub release with the signed distribution. Signing and publishing read
-`CERTIFICATE_CHAIN`, `PRIVATE_KEY`, `PRIVATE_KEY_PASSWORD` and `PUBLISH_TOKEN` from the environment.
