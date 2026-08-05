@@ -1,0 +1,61 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build & verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      # The Plugin Verifier downloads full IDE distributions; caching them keeps runs to minutes.
+      - name: Cache Plugin Verifier IDEs
+        uses: actions/cache@v6
+        with:
+          path: ~/.pluginVerifier/ides
+          key: plugin-verifier-${{ runner.os }}-${{ hashFiles('gradle/libs.versions.toml') }}
+          restore-keys: plugin-verifier-${{ runner.os }}-
+
+      - name: Test
+        run: ./gradlew check
+
+      - name: Build plugin
+        run: ./gradlew buildPlugin
+
+      - name: Verify plugin
+        run: ./gradlew verifyPlugin
+
+      - name: Upload distribution
+        uses: actions/upload-artifact@v7
+        with:
+          name: CodingTime-distribution
+          path: build/distributions/*.zip
+
+      - name: Upload verifier report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: plugin-verifier-report
+          path: build/reports/pluginVerifier

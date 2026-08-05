@@ -1,0 +1,42 @@
+<idea-plugin>
+    <id>me.tooobiiii.codingtime</id>
+    <name>CodingTime</name>
+    <vendor email="tobiasrothmeier1807@gmail.com">tooobiiii</vendor>
+
+    <description><![CDATA[
+        <p><b>CodingTime</b> keeps track of how much time you actually spend coding — locally, with no account
+        and no network traffic.</p>
+        <ul>
+            <li>Counts only active editing time: a configurable idle timeout ends a session when you stop working.</li>
+            <li>Live status bar widget with today's total.</li>
+            <li>Dashboard tool window with a daily activity chart plus breakdowns by language and project.</li>
+            <li>All statistics stay on this machine, in the IDE configuration directory.</li>
+        </ul>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <resource-bundle>messages.CodingTimeBundle</resource-bundle>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="me.tooobiiii.codingtime.tracking.CodingTimeStartupActivity"/>
+
+        <statusBarWidgetFactory
+            id="me.tooobiiii.codingtime.statusBar"
+            implementation="me.tooobiiii.codingtime.ui.CodingTimeStatusBarWidgetFactory"
+            order="before positionWidget"/>
+
+        <toolWindow
+            id="CodingTime"
+            anchor="right"
+            factoryClass="me.tooobiiii.codingtime.ui.CodingTimeToolWindowFactory"
+            icon="me.tooobiiii.codingtime.ui.CodingTimeIcons.ToolWindow"/>
+
+        <applicationConfigurable
+            parentId="tools"
+            id="me.tooobiiii.codingtime.settings"
+            instance="me.tooobiiii.codingtime.settings.CodingTimeConfigurable"
+            bundle="messages.CodingTimeBundle"
+            key="settings.title"/>
+    </extensions>
+</idea-plugin>

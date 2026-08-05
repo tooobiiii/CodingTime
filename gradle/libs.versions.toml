@@ -1,0 +1,16 @@
+[versions]
+# The IntelliJ Platform build the plugin is compiled against. 2026.1 (branch 261) keeps
+# the plugin loadable on both 2026.1 and 2026.2 installations.
+platform = "2026.1"
+kotlin = "2.4.10"
+intellijPlatform = "2.18.1"
+junit = "6.1.2"
+
+[libraries]
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+intellij-platform = { id = "org.jetbrains.intellij.platform", version.ref = "intellijPlatform" }
