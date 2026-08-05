@@ -21,23 +21,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
-
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
 
       - uses: gradle/actions/setup-gradle@v6
-
-      # The Plugin Verifier downloads full IDE distributions; caching them keeps runs to minutes.
-      - name: Cache Plugin Verifier IDEs
-        uses: actions/cache@v6
-        with:
-          path: ~/.pluginVerifier/ides
-          key: plugin-verifier-${{ runner.os }}-${{ hashFiles('gradle/libs.versions.toml') }}
-          restore-keys: plugin-verifier-${{ runner.os }}-
 
       - name: Test
         run: ./gradlew check
