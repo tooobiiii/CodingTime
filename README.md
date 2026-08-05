@@ -53,26 +53,3 @@ folds the still-running session into today's numbers, so the displayed time grow
 
 Totals are persisted as `codingTime.xml` in the IDE configuration directory (roaming disabled), which
 is the only place any of this data exists.
-
-## Development
-
-```bash
-./gradlew test          # unit tests
-./gradlew check         # tests + verification tasks
-./gradlew runIde        # launch a sandbox IDE with the plugin
-./gradlew buildPlugin   # distribution ZIP in build/distributions
-./gradlew verifyPlugin  # IntelliJ Plugin Verifier against recommended IDEs
-```
-
-The source layout follows the flow of the data:
-
-| Package | Responsibility |
-| --- | --- |
-| `core` | Pure logic: session accumulation, midnight splitting, chart buckets, time formatting |
-| `tracking` | Editor listeners and the per-project tracker service |
-| `storage` | Persistent per-day / project / language totals |
-| `stats` | Read model that merges persisted totals with the running session |
-| `ui` | Status bar widget, tool window dashboard, chart and breakdown panels |
-| `settings` | Application settings and their configurable |
-
-Everything under `core` is plain Kotlin with no platform dependencies and is covered by unit tests.
